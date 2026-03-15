@@ -246,7 +246,7 @@ export default function Landing({ nav }) {
                 <div className="nav-logo-mark">
                   <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                 </div>
-                <span className="nav-logo-text" style={{ color:'var(--white)' }}>AutoML<span style={{ color:'rgba(255,255,255,.3)' }}>.ai</span></span>
+                <span className="nav-logo-text" style={{ color:'var(--white)' }}>RaWML<span style={{ color:'rgba(255,255,255,.3)' }}>.ai</span></span>
               </div>
               <p>Intelligent machine learning automation for modern data teams. Build, evaluate, and deploy ML models without the overhead.</p>
             </div>
