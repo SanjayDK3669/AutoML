@@ -99,44 +99,126 @@ function S1Upload({ onUploaded }) {
 // S2 — Target column picker
 // ─────────────────────────────────────────────────
 function S2Target({ meta, onStart }) {
-  const [target, setTarget] = useState(null)
+  const [target,    setTarget]    = useState(null)
+  const [confirmed, setConfirmed] = useState(false)
   const { columns, dtypes, missing, shape } = meta
   const nc = columns.filter(c => isNumericDtype(dtypes[c])).length
+
+  // Reset checkbox whenever target changes
+  function pickTarget(col) {
+    setTarget(col)
+    setConfirmed(false)
+  }
+
+  // Inline styles for column tiles based on type
+  function tileStyle(col, isPicked) {
+    const isNum = isNumericDtype(dtypes[col])
+    if (isPicked) return {}   // .picked class handles selected state
+    if (isNum) return {
+      borderColor: '#1a1a1a',
+      color: '#0a0a0a',
+      background: '#f0f0f0',
+    }
+    return {
+      borderColor: '#94a3b8',
+      color: '#64748b',
+      background: '#f8fafc',
+    }
+  }
 
   return (
     <div className="aml-body"><div className="pw">
       <div className="panel">
         <div className="panel-title">Choose Target Column</div>
-        <div className="panel-sub">Click a column to set it as the prediction target. Dark = Numeric · Grey = Categorical.</div>
+        <div className="panel-sub">Click a column to set it as the prediction target.</div>
         <div className="meta-row">
           {[['Rows',shape.rows.toLocaleString()],['Columns',shape.cols],['Numeric',nc],['Categorical',columns.length-nc]].map(([l,v]) => (
             <div key={l} className="meta-box"><div className="lbl">{l}</div><div className="val">{v}</div></div>
           ))}
         </div>
+
+        {/* Legend */}
         <div className="legend-row">
-          <span className="legend-dot ld-num"/>&nbsp;Numeric&nbsp;
-          <span className="legend-dot ld-cat"/>&nbsp;Categorical
+          <span style={{ display:'inline-flex', alignItems:'center', gap:'.4rem', padding:'.2rem .7rem', borderRadius:'6px', border:'1.5px solid #1a1a1a', background:'#f0f0f0', fontSize:'.73rem', fontWeight:700, color:'#0a0a0a' }}>
+            <span style={{ width:'8px', height:'8px', borderRadius:'50%', background:'#0a0a0a', display:'inline-block' }}/>
+            Numeric
+          </span>
+          <span style={{ display:'inline-flex', alignItems:'center', gap:'.4rem', padding:'.2rem .7rem', borderRadius:'6px', border:'1.5px solid #94a3b8', background:'#f8fafc', fontSize:'.73rem', fontWeight:700, color:'#64748b' }}>
+            <span style={{ width:'8px', height:'8px', borderRadius:'50%', background:'#94a3b8', display:'inline-block' }}/>
+            Categorical
+          </span>
         </div>
+
+        {/* Column grid */}
         <div className="col-grid">
-          {columns.map(col => (
-            <div
-              key={col}
-              className={`col-tile ${target === col ? 'picked' : ''}`}
-              title={`${col} (${dtypes[col]})`}
-              onClick={() => setTarget(col)}
-            >
-              {col}
-            </div>
-          ))}
+          {columns.map(col => {
+            const isPicked = target === col
+            const isNum    = isNumericDtype(dtypes[col])
+            return (
+              <div
+                key={col}
+                className={`col-tile ${isPicked ? 'picked' : ''}`}
+                title={`${col} (${dtypes[col]})`}
+                style={{ position: 'relative', ...tileStyle(col, isPicked) }}
+                onClick={() => pickTarget(col)}
+              >
+                {/* Small type badge in top-right */}
+                {!isPicked && (
+                  <span style={{
+                    position: 'absolute', top: '4px', right: '5px',
+                    fontSize: '.55rem', fontWeight: 800, letterSpacing: '.04em',
+                    color: isNum ? '#0a0a0a' : '#94a3b8', opacity: .7,
+                    lineHeight: 1,
+                  }}>
+                    {isNum ? 'NUM' : 'CAT'}
+                  </span>
+                )}
+                {col}
+              </div>
+            )
+          })}
         </div>
+
+        {/* Target info alert */}
         {target && (
           <div className="target-alert" style={{ marginTop:'1rem' }}>
-            Target: <strong>{target}</strong> · Type: <strong>{dtypes[target]}</strong> · Missing: <strong>{missing[target]||0}</strong>
+            ✅ Target: <strong>{target}</strong> · Type: <strong>{dtypes[target]}</strong> · Missing: <strong>{missing[target]||0}</strong>
           </div>
         )}
-        <button className="btn btn-ink btn-lg" disabled={!target} style={{ marginTop:'.25rem' }}
-          onClick={() => onStart(target)}>
-           Start AutoML Pipeline
+
+        {/* ── Confirmation checkbox ── */}
+        {target && (
+          <label style={{
+            display: 'flex', alignItems: 'flex-start', gap: '.65rem',
+            padding: '.9rem 1.1rem', marginTop: '.75rem',
+            background: confirmed ? '#f0fdf4' : 'var(--smoke)',
+            border: `1.5px solid ${confirmed ? '#86efac' : 'var(--smoke-3)'}`,
+            borderRadius: 'var(--r)', cursor: 'pointer',
+            transition: 'all .2s ease', userSelect: 'none',
+          }}>
+            <input
+              type="checkbox"
+              checked={confirmed}
+              onChange={e => setConfirmed(e.target.checked)}
+              style={{ marginTop: '2px', width: '15px', height: '15px', cursor: 'pointer', accentColor: '#0a0a0a', flexShrink: 0 }}
+            />
+            <span style={{ fontSize: '.88rem', color: 'var(--ink)', lineHeight: 1.5 }}>
+              I confirm that{' '}
+              <strong style={{ background: 'var(--ink)', color: '#fff', padding: '.1rem .45rem', borderRadius: '5px', fontFamily: 'var(--mono)', fontSize: '.82rem' }}>
+                {target}
+              </strong>
+              {' '}should be used as the <strong>target column</strong> for this AutoML pipeline.
+            </span>
+          </label>
+        )}
+
+        <button
+          className="btn btn-ink btn-lg"
+          disabled={!target || !confirmed}
+          style={{ marginTop: '1rem' }}
+          onClick={() => onStart(target)}
+        >
+          Start AutoML Pipeline
         </button>
       </div>
     </div></div>
@@ -146,10 +228,11 @@ function S2Target({ meta, onStart }) {
 // ─────────────────────────────────────────────────
 // S3 — Progress
 // ─────────────────────────────────────────────────
-function S3Progress({ jobStatus }) {
+function S3Progress({ jobStatus, onBack }) {
   const pct  = jobStatus?.progress || 0
   const step = jobStatus?.step
   const msg  = jobStatus?.message || 'Initialising…'
+  const isRunning = jobStatus?.status === 'running'
 
   function rowClass(s) {
     if (!step) return 's-wait'
@@ -187,6 +270,23 @@ function S3Progress({ jobStatus }) {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* ── Back button ── */}
+      <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--smoke-3)', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+        <button
+          className="btn btn-outline-ink btn-sm"
+          onClick={onBack}
+          style={{ display: 'flex', alignItems: 'center', gap: '.4rem' }}
+        >
+          ← Change Target Column
+        </button>
+        {isRunning && (
+          <span style={{ fontSize: '.78rem', color: 'var(--fog)', display: 'flex', alignItems: 'center', gap: '.4rem' }}>
+            <span style={{ width: '7px', height: '7px', background: '#f59e0b', borderRadius: '50%', display: 'inline-block', animation: 'pulse 1.5s infinite' }}/>
+            Pipeline is still running in the background
+          </span>
+        )}
       </div>
     </div></div>
   )
@@ -299,13 +399,26 @@ function S4Results({ job, meta, jobId, onOpenChat }) {
       {tab === 'overview' && (
         <>
           <div className="stats-grid">
-            {[['Rows',(d.n_rows||0).toLocaleString(),''],['Features',(d.feature_cols||[]).length,''],['Numeric',(d.num_cols||[]).length,'features'],['Categorical',(d.cat_cols||[]).length,'features'],['Task',d.task||'—',''],['Best Score',d.best_score||'—',pk]].map(([l,v,s]) => (
-              <div key={l} className="stat-box">
-                <div className="s-lbl">{l}</div>
-                <div className="s-val">{v}</div>
-                {s && <div className="s-sub">{s}</div>}
-              </div>
-            ))}
+            {[['Rows',(d.n_rows||0).toLocaleString(),''],['Features',(d.feature_cols||[]).length,''],['Numeric',(d.num_cols||[]).length,'features'],['Categorical',(d.cat_cols||[]).length,'features'],['Task',d.task||'—',''],['Best Score',d.best_score||'—',pk]].map(([l,v,s]) => {
+              const strVal = String(v)
+              const valStyle = {
+                fontSize: strVal.length > 10 ? '.82rem' : strVal.length > 7 ? '1rem' : '1.4rem',
+                fontWeight: 700,
+                color: 'var(--ink)',
+                fontFamily: 'var(--mono)',
+                wordBreak: 'break-word',
+                overflowWrap: 'break-word',
+                lineHeight: 1.3,
+                marginTop: '.1rem',
+              }
+              return (
+                <div key={l} className="stat-box" style={{ overflow:'hidden' }}>
+                  <div className="s-lbl">{l}</div>
+                  <div style={valStyle}>{v}</div>
+                  {s && <div className="s-sub">{s}</div>}
+                </div>
+              )
+            })}
           </div>
           <div className="alert alert-ok">
              <strong>{d.best_model}</strong> — {pk}: <strong>{d.best_score}</strong> — saved as <code>best_model.pkl</code>
@@ -563,7 +676,7 @@ export default function AutoMLPage({ nav }) {
 
       {step === 1 && <S1Upload onUploaded={onUploaded}/>}
       {step === 2 && <S2Target meta={meta} onStart={onStart}/>}
-      {step === 3 && <S3Progress jobStatus={jobStatus}/>}
+      {step === 3 && <S3Progress jobStatus={jobStatus} onBack={() => { if (pollRef.current) clearInterval(pollRef.current); setStep(2) }}/>}
       {step === 4 && jobStatus?.status === 'done' && (
         <S4Results job={jobStatus} meta={meta} jobId={jobId} onOpenChat={() => setStep(5)}/>
       )}
