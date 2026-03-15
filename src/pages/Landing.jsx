@@ -57,13 +57,13 @@ export default function Landing({ nav }) {
         <div className="hero-content">
           <div className="hero-eyebrow">
             <span className="hero-eyebrow-dot"/>
-            Introducing AutoML.ai v3.0
+            Introducing RaWML.ai v3.0
           </div>
           <h1 className="hero-h1">
             Machine learning,<br/><em>without the complexity</em>
           </h1>
           <p className="hero-sub">
-            Upload your dataset, define your goal, and let AutoML.ai build, evaluate, and explain the best model — powered by state-of-the-art automation and Groq-accelerated AI.
+            Upload your dataset, define your goal, and let RaWML.ai build, evaluate, and explain the best model — powered by state-of-the-art automation and Groq-accelerated AI.
           </p>
           <div className="hero-ctas">
             <button className="btn-primary" onClick={nav.openChatSelect}>
@@ -106,7 +106,7 @@ export default function Landing({ nav }) {
                 Built for data teams<br/>who move <em>fast</em>
               </h2>
               <p className="section-sub animate delay-2">
-                AutoML.ai eliminates the manual overhead of model selection, hyperparameter tuning, and drift monitoring. From raw CSV to production-ready model in minutes.
+                RaWML.ai eliminates the manual overhead of model selection, hyperparameter tuning, and drift monitoring. From raw CSV to production-ready model in minutes.
               </p>
               <div className="about-feature-list animate delay-3">
                 {ABOUT_FEATURES.map(f => (
@@ -155,7 +155,7 @@ export default function Landing({ nav }) {
         <div className="container">
           <div className="section-label animate" style={{ color:'rgba(255,255,255,.3)' }}>Product</div>
           <h2 className="section-title animate delay-1">Two powerful modes.<br/><em>One platform.</em></h2>
-          <p className="section-sub animate delay-2">Whether you need document intelligence or end-to-end machine learning, AutoML.ai has you covered.</p>
+          <p className="section-sub animate delay-2">Whether you need document intelligence or end-to-end machine learning, RaWML.ai has you covered.</p>
           <div className="product-grid animate delay-3">
             {PRODUCTS.map(p => (
               <div key={p.num} className="product-card">
@@ -185,7 +185,7 @@ export default function Landing({ nav }) {
               <div className="tc-body">
                 <div className="tc-name">Sanjy D K</div>
                 <div className="tc-role">Founder &amp; CEO</div>
-                <div className="tc-bio">Former ML engineer at a leading fintech. Built and shipped ML pipelines at scale for 1 year before founding AutoML.ai.</div>
+                <div className="tc-bio">Former ML engineer at a leading fintech. Built and shipped ML pipelines at scale for 1 year before founding RaWML.ai.</div>
               </div>
             </div>
           </div>
@@ -202,7 +202,7 @@ export default function Landing({ nav }) {
               <p className="section-sub animate delay-2">Have a question about our product, a partnership inquiry, or need technical support? We're here to help.</p>
               <div className="contact-info animate delay-3">
                 {[
-                  { icon:'✉️', label:'Email',  value:<a href="mailto:hello@automl.ai">business@sandyie.in</a> },
+                  { icon:'✉️', label:'Email',  value:<a href="mailto:business@sandyie.in">business@sandyie.in</a> },
                   { icon:'📞', label:'Phone',  value:<a href="tel:+919876543210">+91 901 988 3633</a> },
                   { icon:'📍', label:'Office', value:'Remote' },
                   { icon:'🕐', label:'Hours',  value:'Mon – Fri, 9 AM – 6 PM IST' },
@@ -279,7 +279,7 @@ export default function Landing({ nav }) {
             </div>
           </div>
           <div className="footer-bottom">
-            <span>© 2026 AutoML.ai. All rights reserved.</span>
+            <span>© 2026 RaWML.ai. All rights reserved.</span>
             <span>Built with ♥ in India</span>
           </div>
         </div>

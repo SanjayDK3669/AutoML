@@ -29,7 +29,7 @@ export default function Nav({ onChat, onHome }) {
               <path d="M2 12l10 5 10-5"/>
             </svg>
           </div>
-          <span className="nav-logo-text">AutoML<span>.ai</span></span>
+          <span className="nav-logo-text">RaWML<span>.ai</span></span>
         </div>
 
         {/* Desktop links */}

@@ -298,7 +298,7 @@ export default function RagChat({ nav }) {
                 />
                 <button className="chat-send" onClick={sendMessage} disabled={!input.trim() || typing}>➤</button>
               </div>
-              <div className="chat-hint">Enter to send · Shift+Enter for new line · Powered by AutoML.ai</div>
+              <div className="chat-hint">Enter to send · Shift+Enter for new line · Powered by RaWML.ai</div>
             </div>
           </div>
         </div>
