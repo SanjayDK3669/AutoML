@@ -211,7 +211,7 @@ export default function RagChat({ nav }) {
       <div className="chat-nav">
         <div className="chat-nav-left">
           <button onClick={() => setSidebarOpen(v => !v)} style={{ background:'none', border:'none', fontSize:'1.1rem', cursor:'pointer', color:'var(--fog)', padding:'.25rem .35rem' }}>☰</button>
-          <span className="chat-nav-logo">AutoML<span style={{ color:'var(--fog)' }}>.ai</span></span>
+          <span className="chat-nav-logo">RaWML<span style={{ color:'var(--fog)' }}>.ai</span></span>
           <span className="chat-nav-badge">RAG + Web Search</span>
         </div>
         <div className="chat-nav-right">

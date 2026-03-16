@@ -218,7 +218,7 @@ function S2Target({ meta, onStart }) {
           style={{ marginTop: '1rem' }}
           onClick={() => onStart(target)}
         >
-          Start AutoML Pipeline
+          Start RaWML Pipeline
         </button>
       </div>
     </div></div>
@@ -256,7 +256,7 @@ function S3Progress({ jobStatus, onBack }) {
     <div className="aml-body"><div className="prog-wrap">
       <div className="prog-hero">
         <div className="prog-pct">{pct}%</div>
-        <h2>Running AutoML Pipeline</h2>
+        <h2>Running RaWML Pipeline</h2>
         <p>{msg}</p>
       </div>
       <div className="bar-track"><div className="bar-fill" style={{ width:`${pct}%` }}/></div>
@@ -660,10 +660,10 @@ export default function AutoMLPage({ nav }) {
       <div className="aml-nav">
         <div style={{ display:'flex', alignItems:'center', gap:'.75rem' }}>
           <span style={{ fontFamily:'var(--serif)', fontSize:'1.1rem', color:'var(--ink)' }}>
-            AutoML<span style={{ color:'var(--fog)' }}>.ai</span>
+            RaWML<span style={{ color:'var(--fog)' }}>.ai</span>
           </span>
           <span style={{ fontSize:'.68rem', fontWeight:700, letterSpacing:'.06em', textTransform:'uppercase', background:'var(--smoke)', color:'var(--ghost)', borderRadius:'20px', padding:'.25rem .75rem', border:'1px solid var(--smoke-3)' }}>
-            AutoML Studio
+            RaWML Studio
           </span>
         </div>
         <div style={{ display:'flex', alignItems:'center', gap:'.75rem' }}>
